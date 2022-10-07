@@ -1,34 +1,81 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import React, { useState, FormEvent } from 'react';
+import { AccountForm, AddressForm, UserForm } from './components';
+import { useMultiStepForm } from './hooks';
 
-function App() {
-  const [count, setCount] = useState(0)
+const btnStyle: string = 'px-[1rem] py-[.5rem]';
+
+type formDataType = {
+  firstName: string;
+  lastName: string;
+  age: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  email: string;
+  password: string;
+};
+
+const INIT_DATA: formDataType = {
+  firstName: '',
+  lastName: '',
+  age: '',
+  street: '',
+  city: '',
+  state: '',
+  zip: '',
+  email: '',
+  password: '',
+};
+
+const App: React.FC = () => {
+  const [data, setData] = useState<formDataType>(INIT_DATA);
+  function updateFields(fields: Partial<FormData>) {
+    setData((prev) => {
+      return { ...prev, ...fields };
+    });
+  }
+  const { steps, currStepIdx, step, firstStep, lastStep, back, next } =
+    useMultiStepForm([
+      <UserForm {...data} updateFields={updateFields} />,
+      <AddressForm {...data} updateFields={updateFields} />,
+      <AccountForm {...data} updateFields={updateFields} />,
+    ]);
+
+  function submitHandle(e: FormEvent) {
+    e.preventDefault();
+    if (!lastStep) return next();
+    alert('Data Figuratively Submitted!');
+  }
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+    <div className='relative bg-white border-2 border-black p-[2rem] mx-auto my-[5rem]  font-[Arial] max-w-max shadow-[0_35px_0px_-15px_rgba(0,0,0,1)]'>
+      <form onSubmit={submitHandle}>
+        <div className='absolute top-[.5rem] right-[.5rem] bg-black text-white px-[.5rem] rounded-full'>
+          {currStepIdx + 1}/ {steps.length}
+        </div>
+        {step}
+        <div className='mt-[1rem] flex gap-[.5rem] justify-end'>
+          {!firstStep && (
+            <button
+              type='button'
+              onClick={back}
+              className={`${btnStyle} bg-gray-500 text-white hover:shadow-[0_15px_0px_-5px_rgba(0,0,0,1)]`}
+            >
+              Back
+            </button>
+          )}
 
-export default App
+          <button
+            type='submit'
+            className={`${btnStyle} bg-green-500 text-white hover:shadow-[0_15px_0px_-5px_rgba(0,0,0,1)]`}
+          >
+            {lastStep ? 'Submit' : 'Next'}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default App;
