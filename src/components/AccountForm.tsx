@@ -10,7 +10,7 @@ export type AccountFormProps = AccountFormData & {
   updateFields: (fields: Partial<AccountFormData>) => void;
 };
 
-const AccountForm: React.FC = (props: AccountFormProps) => {
+function AccountForm(props: AccountFormProps) {
   const { email, password, updateFields } = props;
   return (
     <FormContainer title='Account Form'>
@@ -32,6 +32,6 @@ const AccountForm: React.FC = (props: AccountFormProps) => {
       />
     </FormContainer>
   );
-};
+}
 
 export { AccountForm };

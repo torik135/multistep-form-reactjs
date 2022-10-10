@@ -11,7 +11,7 @@ export type UserFormProps = UserFormData & {
   updateFields: (fields: Partial<UserFormData>) => void;
 };
 
-const UserForm: React.FC = (props: UserFormProps) => {
+function UserForm(props: UserFormProps) {
   const { firstName, lastName, age, updateFields } = props;
   return (
     <FormContainer title='User Form'>
@@ -42,6 +42,6 @@ const UserForm: React.FC = (props: UserFormProps) => {
       />
     </FormContainer>
   );
-};
+}
 
 export { UserForm };

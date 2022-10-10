@@ -12,7 +12,7 @@ export type AddressFormProps = AddressFormData & {
   updateFields: (fields: Partial<AddressFormData>) => void;
 };
 
-const AddressForm: React.FC = (props: AddressFormProps) => {
+function AddressForm(props: AddressFormProps) {
   const { street, city, state, zip, updateFields } = props;
   return (
     <FormContainer title='Address Form'>
@@ -50,6 +50,6 @@ const AddressForm: React.FC = (props: AddressFormProps) => {
       />
     </FormContainer>
   );
-};
+}
 
 export { AddressForm };

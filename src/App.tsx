@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import { useState, FormEvent } from 'react';
 import { AccountForm, AddressForm, UserForm } from './components';
 import { useMultiStepForm } from './hooks';
 
@@ -28,9 +28,9 @@ const INIT_DATA: formDataType = {
   password: '',
 };
 
-const App: React.FC = () => {
-  const [data, setData] = useState<formDataType>(INIT_DATA);
-  function updateFields(fields: Partial<FormData>) {
+function App() {
+  const [data, setData] = useState(INIT_DATA);
+  function updateFields(fields: Partial<formDataType>) {
     setData((prev) => {
       return { ...prev, ...fields };
     });
@@ -76,6 +76,6 @@ const App: React.FC = () => {
       </form>
     </div>
   );
-};
+}
 
 export default App;
